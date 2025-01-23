@@ -1,0 +1,13 @@
+[dependencies]
+
+[package]
+  cjc-version = "0.58.3"
+  compile-option = "--fast-math -O2 -s -Woff all"
+  description = "nothing here"
+  link-option = ""
+  name = "mbassador4cj"
+  output-type = "dynamic"
+  src-dir = ""
+  target-dir = ""
+  version = "0.0.1"
+  [package.package-configuration]

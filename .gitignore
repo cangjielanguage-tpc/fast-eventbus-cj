@@ -1,0 +1,14 @@
+.cache/
+.devbrain/
+.idea/
+.vscode/
+target/
+cjpm.lock
+/test_temp
+/ci_test
+*.gcda
+*.gcno
+/output
+**/*.macrocall
+/test/log
+/test/report
