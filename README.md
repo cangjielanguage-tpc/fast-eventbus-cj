@@ -5,20 +5,20 @@
 <p align="center">
 <img alt="" src="https://img.shields.io/badge/release-v0.0.1-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v0.58.3-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v0.59.6-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-90.4%25-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
 
 ## 介绍
 
-mbassador4cj 一种是发布/订阅事件总线。为多线程应用程序中的高吞吐量而优化的强大事件总线。支持同步和异步事件发布，事件过滤功能。
+mbassador4cj 是一种发布/订阅事件总线。为多线程应用程序中的高吞吐量而优化的事件总线。支持同步和异步，事件过滤功能。
 
 ### 特性
 
-- 🚀 支持事件的同步订阅和发布
+- 🚀 支持事件的同步订阅，发布，取消订阅
 
-- 🚀 支持事件的异步订阅和发布
+- 🚀 支持事件的异步订阅，发布，取消订阅
 
 - 🚀 支持事件过滤
 
@@ -46,7 +46,7 @@ mbassador4cj 一种是发布/订阅事件总线。为多线程应用程序中的
 
 ## <img alt="" src="./doc/assets/readme-icon-compile.png" style="display: inline-block;" width=3%/> 使用说明
 
-### 编译（win/linux）
+### 编译（windows/linux）
 
 ```shell
 cjpm build
@@ -74,7 +74,6 @@ cjpm build
         }
     }
 ```
-执行结果如下：
 
 功能示例描述:事件的同步发布
 示例代码如下：
@@ -96,8 +95,6 @@ cjpm build
         }
     }
 ```
-执行结果如下：
-
 
 #### 事件的异步订阅发布功能示例
 功能示例描述:事件的异步订阅
@@ -137,7 +134,6 @@ cjpm build
         mbassador.publishAsny(mbconfig, prepareDataQueue(eventQueue))
     }
 ```
-执行结果如下：
 
 #### 事件过滤功能示例
 功能示例描述:通过实现Filter接口，通过FilterChain对象，实现自定义过滤器，自定义顺序，过滤器链的过滤功能
@@ -205,11 +201,11 @@ public class PublisherFilter <: Filter {
 
 在下述版本验证通过：
 
-    Cangjie Version: 0.58.3
+    Cangjie Version: 0.59.6
 
 ## 开源协议
 
-本项目基于 [Apache-2.0 license](https://gitcode.com/Cangjie-TPC/eventbus4cj/blob/develop/LICENSE) ，请自由的享受和参与开源。
+本项目基于 [Apache-2.0 license](https://gitcode.com/Cangjie-TPC/mbassador4cj/blob/develop/LICENSE) ，请自由的享受和参与开源。
 
 ## <img alt="" src="./doc/assets/readme-icon-contribute.png" style="display: inline-block;" width=3%/> 参与贡献
 

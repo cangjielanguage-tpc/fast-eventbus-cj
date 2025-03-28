@@ -92,7 +92,11 @@ public class UnSubscriberFactory <: Exector {
     public func execute(event: Event): Unit {
         isFinished = false
         mtx.lock()
-        eventMap.get(event.evevtTypeName)?.eventContainer.remove(event)
+        if(let Some(v) <- eventMap.get(event.evevtTypeName)){
+            v.eventContainer.remove(event)
+        }else{
+           throw MbassadorException("")
+        }
         mtx.unlock()
         isFinished = true
     }

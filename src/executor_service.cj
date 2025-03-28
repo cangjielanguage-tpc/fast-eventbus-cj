@@ -7,6 +7,8 @@ import std.sync.*
 import std.collection.concurrent.*
 import std.collection.*
 import std.time.*
+import std.runtime.*
+import std.math.*
 
 public class ExecutorService {
     //任务队列
@@ -15,9 +17,9 @@ public class ExecutorService {
     var publishTaskQueue: BlockingQueue<Event> = BlockingQueue<Event>()
     var futures: ArrayList<Future<Unit>> = ArrayList<Future<Unit>>()
 
-    var subscriberParallel: Int64 = 1
-    var unsubscriberParallel: Int64 = 1
-    var publishParallel: Int64 = 1
+    public var subscriberParallel: Int64 = 1
+    public var unsubscriberParallel: Int64 = 1
+    public var publishParallel: Int64 = 1
 
     public init() {}
 
@@ -25,10 +27,41 @@ public class ExecutorService {
      * 自定义并行度，参数顺序：订阅，取消订阅，发布
      */
     public init(subscriberParallel: Int64, unsubscriberParallel: Int64, publishParallel: Int64) {
-        this.subscriberParallel = subscriberParallel
-        this.unsubscriberParallel = unsubscriberParallel
-        this.publishParallel = publishParallel
+        //去除负数
+        if(checkSingleInputValid(subscriberParallel)){
+            this.subscriberParallel = subscriberParallel
+        }
+        if(checkSingleInputValid(unsubscriberParallel)){
+            this.unsubscriberParallel = unsubscriberParallel
+        }
+        if(checkSingleInputValid(publishParallel)){
+            this.publishParallel = publishParallel
+        }
+        //控制最大并行数，所有的线程数求和 <= cpu核数*2
+        
+        let cpuCount = getProcessorCount()
+        let limitcpuCount = cpuCount*2
+        var totalThreadNumber = subscriberParallel + unsubscriberParallel + publishParallel
+        if(checkInputValid(limitcpuCount,totalThreadNumber)){
+            return
+        }
+        this.subscriberParallel = Int64(Float32(limitcpuCount) * (Float32(subscriberParallel)/Float32(totalThreadNumber)))
+        this.unsubscriberParallel = Int64(Float32(limitcpuCount) * (Float32(unsubscriberParallel)/Float32(totalThreadNumber)))
+        this.publishParallel = Int64(Float32(limitcpuCount) * (Float32(publishParallel)/Float32(totalThreadNumber)))
     }
+    private func checkSingleInputValid(parallel: Int64):Bool{
+        if(parallel <= 0){
+            return false
+        }
+        return true
+    }
+    private func checkInputValid(limitcpuCount:Int64,totalThreadNumber: Int64):Bool{
+        if(totalThreadNumber > limitcpuCount){
+            return false
+        }
+        return true
+    }
+
     /*
      * 入口函数 业务逻辑：根据发布，订阅，取消订阅 类型入不同的队列 起各自的线程处理业务
      */

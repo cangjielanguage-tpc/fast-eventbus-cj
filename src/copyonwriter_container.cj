@@ -18,11 +18,27 @@ public class CopyOnWriterContainer <: Collection<Event> {
     }
 
     public func isEmpty(): Bool {
-        this.container.isEmpty()
+         var size = 0
+        for(e in container){
+            if(e.linkedListNode.isSome()){
+                size++
+                break
+            }
+        }
+        if(size == 0){
+            return true
+        }
+        return false     
     }
     public prop size: Int64 {
         get() {
-            return this.container.size
+            var size = 0
+            for(e in container){
+                if(e.linkedListNode.isSome()){
+                    size++
+                }
+            }
+            return size
         }
     }
 
@@ -31,7 +47,7 @@ public class CopyOnWriterContainer <: Collection<Event> {
         t.linkedListNode = nodeIndfo
     }
     public func remove(t: Event): Unit {
-        this.container.remove(t.linkedListNode.getOrThrow())
+        // this.container.remove(t.linkedListNode.getOrThrow())
         t.linkedListNode = None
     }
 

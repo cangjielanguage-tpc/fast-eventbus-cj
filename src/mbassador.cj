@@ -39,7 +39,7 @@ public class Mbassador {
         try{
             mbassadorConfiguration.getExector(Constant.UNREGISTER).execute(event)
         }catch(e:MbassadorException){
-            throw MbassadorException("unregister fail")
+            throw MbassadorException("unSubscribe error.The current event has not been subscribed, please operate subscription first.")
         }
 
     }
