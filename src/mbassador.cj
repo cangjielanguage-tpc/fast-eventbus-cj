@@ -53,7 +53,7 @@ public class Mbassador {
     }
 
     //异步订阅
-    public func registerAsny(mbassadorConfiguration: MbassadorConfiguration, eventQueue: BlockingQueue<Event>): Unit {
+    public func registerAsny(mbassadorConfiguration: MbassadorConfiguration, eventQueue: LinkedBlockingQueue<Event>): Unit {
         try {
             mbassadorConfiguration.executorService.asyncExec(FeatureType.REGISTER, mbassadorConfiguration, eventQueue)
         }catch(e:MbassadorException){
@@ -62,7 +62,7 @@ public class Mbassador {
     }
 
     //异步取消订阅
-    public func unregisterAsny(mbassadorConfiguration: MbassadorConfiguration, eventQueue: BlockingQueue<Event>): Unit {
+    public func unregisterAsny(mbassadorConfiguration: MbassadorConfiguration, eventQueue: LinkedBlockingQueue<Event>): Unit {
         try{
             mbassadorConfiguration.executorService.asyncExec(FeatureType.UNREGISTER, mbassadorConfiguration, eventQueue)
         }catch(e:MbassadorException){
@@ -72,7 +72,7 @@ public class Mbassador {
     }
 
     //异步发布
-    public func publishAsny(mbassadorConfiguration: MbassadorConfiguration, eventQueue: BlockingQueue<Event>): Unit {
+    public func publishAsny(mbassadorConfiguration: MbassadorConfiguration, eventQueue: LinkedBlockingQueue<Event>): Unit {
         try{
             mbassadorConfiguration.executorService.asyncExec(FeatureType.PUBLISH, mbassadorConfiguration, eventQueue)
         }catch(e:MbassadorException){

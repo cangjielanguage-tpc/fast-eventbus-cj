@@ -24,7 +24,7 @@ public class SubscriberFactory <: Exector {
         subFactory.eventMap = eventMap
         return subFactory
     }
-    let mtx: ReentrantMutex = ReentrantMutex()
+    let mtx: Mutex = Mutex()
     public func execute(event: Event): Unit {
         isFinished = false
         if (let Some(eventIn) <- eventMap.get(event.evevtTypeName)) {
@@ -37,7 +37,7 @@ public class SubscriberFactory <: Exector {
             eventContainer.append(event)
             mtx.unlock()
             var eventManager: EventManager = EventManager(eventContainer)
-            eventMap.put(event.evevtTypeName, eventManager)
+            eventMap.add(event.evevtTypeName, eventManager)
         }
         isFinished = true
     }
@@ -88,7 +88,7 @@ public class UnSubscriberFactory <: Exector {
         return subFactory
     }
 
-    let mtx: ReentrantMutex = ReentrantMutex()
+    let mtx: Mutex = Mutex()
     public func execute(event: Event): Unit {
         isFinished = false
         mtx.lock()

@@ -107,7 +107,7 @@ mbassador.register(event)
 * 参数：MbassadorConfiguration总线配置对象
 * 参数：event队列
 */
-mbassador.registerAsny(mbconfig, BlockingQueue<Event>)
+mbassador.registerAsny(mbconfig, LinkedBlockingQueue<Event>)
 ```
 #### 1.3 发布
 ##### 1.3.1 同步发布
@@ -125,7 +125,7 @@ mbassador.publish(event)
 * 参数：MbassadorConfiguration总线配置对象
 * 参数：event队列
 */
-mbassador.publishAsny(mbconfig, BlockingQueue<Event>)
+mbassador.publishAsny(mbconfig, LinkedBlockingQueue<Event>)
 ```
 #### 1.4 取消订阅
 ##### 1.4.1 同步取消订阅
@@ -143,7 +143,7 @@ mbassador.unregister(event)
 * 参数：MbassadorConfiguration总线配置对象
 * 参数：event队列
 */
-mbassador.unregisterAsny(mbconfig, BlockingQueue<Event>)
+mbassador.unregisterAsny(mbconfig, LinkedBlockingQueue<Event>)
 ```
 #### 1.5 过滤器
 通过过滤器链的模式，支持自定义过滤器，自定义顺序，多个过滤器的事件过滤功能
@@ -194,7 +194,7 @@ public class CoroutinePool {
         }
     }
     //按照先进先出的方式处理任务，一个event进入，找一个空闲的协程处理
-    public func sumbmit(exector: Exector, taskQueue: BlockingQueue<Event>): Future<Unit> {
+    public func sumbmit(exector: Exector, taskQueue: LinkedBlockingQueue<Event>): Future<Unit> {
         let future = spawn {
             while (true) {
                 var task: Event = taskQueue.dequeue()

@@ -10,9 +10,9 @@ import std.time.*
 
 public class ExecutorService {
     //任务队列
-    var registerTaskQueue: BlockingQueue<Event> = BlockingQueue<Event>()
-    var unRegisterTaskQueue: BlockingQueue<Event> = BlockingQueue<Event>()
-    var publishTaskQueue: BlockingQueue<Event> = BlockingQueue<Event>()
+    var registerTaskQueue: LinkedBlockingQueue<Event> = LinkedBlockingQueue<Event>()
+    var unRegisterTaskQueue: LinkedBlockingQueue<Event> = LinkedBlockingQueue<Event>()
+    var publishTaskQueue: LinkedBlockingQueue<Event> = LinkedBlockingQueue<Event>()
     var futures: ArrayList<Future<Unit>> = ArrayList<Future<Unit>>()
 
     var subscriberParallel: Int64 = 1
@@ -33,7 +33,7 @@ public class ExecutorService {
      * 入口函数 业务逻辑：根据发布，订阅，取消订阅 类型入不同的队列 起各自的线程处理业务
      */
     func asyncExec(featureType: FeatureType, mbassadorConfiguration: MbassadorConfiguration,
-        eventQueue: BlockingQueue<Event>): Unit {
+        eventQueue: LinkedBlockingQueue<Event>): Unit {
         match (featureType) {
             case FeatureType.REGISTER =>
                 futures.add(executeRegister(mbassadorConfiguration, eventQueue))
@@ -43,7 +43,7 @@ public class ExecutorService {
                 futures.add(executePublish(mbassadorConfiguration, eventQueue))
         }
     }
-    private func executeRegister(mbassadorConfiguration: MbassadorConfiguration, eventQueue: BlockingQueue<Event>): Future<Unit> {
+    private func executeRegister(mbassadorConfiguration: MbassadorConfiguration, eventQueue: LinkedBlockingQueue<Event>): Future<Unit> {
         //入队列 
         dataToQueue(eventQueue, registerTaskQueue)
         let pool: CoroutinePool = CoroutinePool(subscriberParallel)
@@ -52,14 +52,14 @@ public class ExecutorService {
         return future
     }
 
-    private func executeUnRegister(mbassadorConfiguration: MbassadorConfiguration, eventQueue: BlockingQueue<Event>): Future<Unit> {
+    private func executeUnRegister(mbassadorConfiguration: MbassadorConfiguration, eventQueue: LinkedBlockingQueue<Event>): Future<Unit> {
         dataToQueue(eventQueue, unRegisterTaskQueue)
         let pool = CoroutinePool(unsubscriberParallel)
         var exector: Exector = mbassadorConfiguration.getExector(Constant.UNREGISTER)
         var future: Future<Unit> = pool.sumbmit(exector, unRegisterTaskQueue)
         return future
     }
-    private func executePublish(mbassadorConfiguration: MbassadorConfiguration, eventQueue: BlockingQueue<Event>): Future<Unit> {
+    private func executePublish(mbassadorConfiguration: MbassadorConfiguration, eventQueue: LinkedBlockingQueue<Event>): Future<Unit> {
         //入队列 
         dataToQueue(eventQueue, publishTaskQueue)
         let pool = CoroutinePool(publishParallel)
@@ -69,9 +69,9 @@ public class ExecutorService {
     }
 
     //入队列
-    private func dataToQueue(eventQueue: BlockingQueue<Event>, taskQueue: BlockingQueue<Event>): Unit {
+    private func dataToQueue(eventQueue: LinkedBlockingQueue<Event>, taskQueue: LinkedBlockingQueue<Event>): Unit {
         for (_ in 0..eventQueue.size) {
-            taskQueue.enqueue(eventQueue.dequeue())
+            taskQueue.add(eventQueue.remove())
         }
     }
 }
@@ -117,10 +117,10 @@ public class CoroutinePool {
         }
     }
     //按照先进先出的方式处理任务，一个event过来，找一个空闲的协程处理
-    public func sumbmit(exector: Exector, taskQueue: BlockingQueue<Event>): Future<Unit> {
+    public func sumbmit(exector: Exector, taskQueue: LinkedBlockingQueue<Event>): Future<Unit> {
         let future = spawn {
             while (true) {
-                var task: Event = taskQueue.dequeue()
+                var task: Event = taskQueue.remove()
                 var isStart: Bool = false
                 //轮询找到空闲线程，提交
                 for (worker in workers) {
@@ -139,7 +139,7 @@ public class CoroutinePool {
                 }
                 //如果没有空闲协程，任务重新入任务队列
                 if (!isStart) {
-                    taskQueue.enqueue(task)
+                    taskQueue.add(task)
                 }
             }
         }
