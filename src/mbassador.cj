@@ -26,29 +26,29 @@ public class Mbassador {
     }
 
     //同步订阅
-    public func register(event: Event): Unit {
+    public func register(event: Event): Bool {
         try {
-            mbassadorConfiguration.getExector(Constant.REGISTER).execute(event)
+            return mbassadorConfiguration.getExector(Constant.REGISTER).execute(event)
         }catch(e:MbassadorException){
             throw MbassadorException("register fail")
         }
 
     }
     //取消订阅
-    public func unregister(event: Event): Unit {
+    public func unregister(event: Event): Bool {
         try{
-            mbassadorConfiguration.getExector(Constant.UNREGISTER).execute(event)
+            return mbassadorConfiguration.getExector(Constant.UNREGISTER).execute(event)
         }catch(e:MbassadorException){
             throw MbassadorException("unSubscribe error.The current event has not been subscribed, please operate subscription first.")
         }
 
     }
     //发布
-    public func publish(event: Event): Unit {
+    public func publish(event: Event): Bool {
         try{
-            mbassadorConfiguration.getExector(Constant.PUBLISH).execute(event)
+            return mbassadorConfiguration.getExector(Constant.PUBLISH).execute(event)
         }catch(e:MbassadorException){
-            throw MbassadorException("publish fail")
+            throw MbassadorException("publish fail.The current event has not been subscribed, please operate subscription first.")
         }
     }
 
@@ -66,7 +66,7 @@ public class Mbassador {
         try{
             mbassadorConfiguration.executorService.asyncExec(FeatureType.UNREGISTER, mbassadorConfiguration, eventQueue)
         }catch(e:MbassadorException){
-            throw MbassadorException("unregisterAsny fail")
+            throw MbassadorException("unregisterAsny fail.The current event has not been subscribed, please operate subscription first.")
         }
 
     }
@@ -76,7 +76,7 @@ public class Mbassador {
         try{
             mbassadorConfiguration.executorService.asyncExec(FeatureType.PUBLISH, mbassadorConfiguration, eventQueue)
         }catch(e:MbassadorException){
-            throw MbassadorException("publishAsny fail")
+            throw MbassadorException("publishAsny fail.The current event has not been subscribed, please operate subscription first.")
         }
     }
 }

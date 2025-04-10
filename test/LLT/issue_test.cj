@@ -24,7 +24,7 @@ public class IssueTest {
     //https://gitcode.com/Cangjie-TPC/mbassador4cj/issues/5
     @TestCase
     public func testissues5_2(): Unit {
-        var ex:ExecutorService = ExecutorService(10,10,80)
+        var ex:ExecutorService = ExecutorService(100,100,800)
         @Assert(ex.subscriberParallel,3)
         @Assert(ex.unsubscriberParallel,3)
         @Assert(ex.publishParallel,25)
@@ -57,4 +57,14 @@ public class IssueTest {
             }
         }
     }
+    //https://gitcode.com/Cangjie-TPC/mbassador4cj/issues/7
+    @TestCase
+    public func testissues7(): Unit {
+        var mbassador = Mbassador()
+        var event: Event = Event("IntergerType",IntegerSubscriber(),IntegerPublisher())
+        @Assert(mbassador.register(event),true)
+        @Assert(mbassador.publish(event),true)
+        @Assert(mbassador.unregister(event),true)
+    }
+
 }

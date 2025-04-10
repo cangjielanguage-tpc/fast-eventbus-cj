@@ -65,7 +65,7 @@ public class MbassadorTest {
         println("---------------------------------testRegisterAsny------------------------------")
         //设置并行参数
         var mbconfig = MbassadorConfiguration()
-        mbconfig.executorService=ExecutorService(3, 3, 30)
+        mbconfig.executorService=ExecutorService(100, 100, 800)
         var mbassador = Mbassador(mbconfig)
         //订阅
         var eventList = DataProvider.prepareData(instance)
