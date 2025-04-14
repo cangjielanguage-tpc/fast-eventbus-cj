@@ -35,6 +35,7 @@ public class CopyOnWriterContainer <: Collection<Event> {
         t.linkedListNode = None
     }
 
+    @Frozen
     public func iterator(): Iterator<Event> {
         this.container.iterator()
     }
