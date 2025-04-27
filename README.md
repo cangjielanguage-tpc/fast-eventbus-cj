@@ -1,5 +1,5 @@
 <div align="center">
-<h1>mbassador4cj</h1>
+<h1>fastEventbus4cj</h1>
 </div>
 
 <p align="center">
@@ -12,7 +12,7 @@
 
 ## 介绍
 
-mbassador4cj 是一种发布/订阅事件总线。为多线程应用程序中的高吞吐量而优化的事件总线。支持同步和异步，事件过滤功能。
+fastEventbus4cj 是一种发布/订阅事件总线。为多线程应用程序中的高吞吐量而优化的事件总线。支持同步和异步，事件过滤功能。
 
 ### 特性
 
@@ -205,7 +205,7 @@ public class PublisherFilter <: Filter {
 
 ## 开源协议
 
-本项目基于 [Apache-2.0 license](https://gitcode.com/Cangjie-TPC/mbassador4cj/blob/develop/LICENSE) ，请自由的享受和参与开源。
+本项目基于 [MIT license](./LICENSE) ，请自由的享受和参与开源。
 
 ## <img alt="" src="./doc/assets/readme-icon-contribute.png" style="display: inline-block;" width=3%/> 参与贡献
 
