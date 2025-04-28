@@ -12,13 +12,13 @@
 
 ## 介绍
 
-fastEventbus4cj 一种是发布/订阅事件总线。为多线程应用程序中的高吞吐量而优化的强大事件总线。支持同步和异步事件发布，事件过滤功能。
+fastEventbus4cj 是一种发布/订阅事件总线。为多线程应用程序中的高吞吐量而优化的事件总线。支持同步和异步，事件过滤功能。
 
 ### 特性
 
-- 🚀 支持事件的同步订阅和发布
+- 🚀 支持事件的同步订阅，发布，取消订阅
 
-- 🚀 支持事件的异步订阅和发布
+- 🚀 支持事件的异步订阅，发布，取消订阅
 
 - 🚀 支持事件过滤
 
@@ -46,7 +46,7 @@ fastEventbus4cj 一种是发布/订阅事件总线。为多线程应用程序中
 
 ## <img alt="" src="./doc/assets/readme-icon-compile.png" style="display: inline-block;" width=3%/> 使用说明
 
-### 编译（win/linux）
+### 编译（windows/linux）
 
 ```shell
 cjpm build
@@ -74,7 +74,6 @@ cjpm build
         }
     }
 ```
-执行结果如下：
 
 功能示例描述:事件的同步发布
 示例代码如下：
@@ -96,8 +95,6 @@ cjpm build
         }
     }
 ```
-执行结果如下：
-
 
 #### 事件的异步订阅发布功能示例
 功能示例描述:事件的异步订阅
@@ -137,7 +134,6 @@ cjpm build
         mbassador.publishAsny(mbconfig, prepareDataQueue(eventQueue))
     }
 ```
-执行结果如下：
 
 #### 事件过滤功能示例
 功能示例描述:通过实现Filter接口，通过FilterChain对象，实现自定义过滤器，自定义顺序，过滤器链的过滤功能

@@ -7,7 +7,7 @@ import std.collection.*
 import std.collection.concurrent.*
 import std.sync.*
 public interface Exector {
-    func execute(event: Event): Unit
+    func execute(event: Event): Bool
 
     func isFinshed(): Bool
 }
@@ -25,21 +25,26 @@ public class SubscriberFactory <: Exector {
         return subFactory
     }
     let mtx: ReentrantMutex = ReentrantMutex()
-    public func execute(event: Event): Unit {
+    public func execute(event: Event): Bool {
         isFinished = false
-        if (let Some(eventIn) <- eventMap.get(event.evevtTypeName)) {
-            mtx.lock()
-            eventIn.eventContainer.append(event)
-             mtx.unlock()
-        } else {
-            var eventContainer: CopyOnWriterContainer = CopyOnWriterContainer()
-            mtx.lock()
-            eventContainer.append(event)
-            mtx.unlock()
-            var eventManager: EventManager = EventManager(eventContainer)
-            eventMap.put(event.evevtTypeName, eventManager)
+        try{
+            if (let Some(eventIn) <- eventMap.get(event.evevtTypeName)) {
+                mtx.lock()
+                eventIn.eventContainer.append(event)
+                mtx.unlock()
+            } else {
+                var eventContainer: CopyOnWriterContainer = CopyOnWriterContainer()
+                mtx.lock()
+                eventContainer.append(event)
+                mtx.unlock()
+                var eventManager: EventManager = EventManager(eventContainer)
+                eventMap.put(event.evevtTypeName, eventManager)
+            }
+            isFinished = true
+        }catch(e:MbassadorException){
+            throw MbassadorException("")
         }
-        isFinished = true
+        return isFinished
     }
 
     public func isFinshed(): Bool {
@@ -60,12 +65,15 @@ public class PublisherFactory <: Exector {
         return pubInst
     }
 
-    public func execute(event: Event): Unit {
+    public func execute(event: Event): Bool {
         isFinished = false
         if (event.linkedListNode.isSome()) {
             event.publisher.publish(event)
+            isFinished = true
+        }else{
+            throw MbassadorException("")
         }
-        isFinished = true
+        return isFinished
     }
 
     public func isFinshed(): Bool {
@@ -89,12 +97,18 @@ public class UnSubscriberFactory <: Exector {
     }
 
     let mtx: ReentrantMutex = ReentrantMutex()
-    public func execute(event: Event): Unit {
+    public func execute(event: Event): Bool {
         isFinished = false
+
         mtx.lock()
-        eventMap.get(event.evevtTypeName)?.eventContainer.remove(event)
+        if(let Some(v) <- eventMap.get(event.evevtTypeName)){
+            v.eventContainer.remove(event)
+            isFinished = true
+        }else{
+            throw MbassadorException("")
+        }
         mtx.unlock()
-        isFinished = true
+        return isFinished
     }
     public func isFinshed(): Bool {
         return this.isFinished
