@@ -101,19 +101,19 @@ public class mbassador{
     * 参数：MbassadorConfiguration总线配置对象
     * 参数：event队列
     */
-    public func registerAsny(mbassadorConfiguration: MbassadorConfiguration, eventQueue: BlockingQueue<Event>): Unit
+    public func registerAsny(mbassadorConfiguration: MbassadorConfiguration, eventQueue: LinkedBlockingQueue<Event>): Unit
     /*
     * 异步取消订阅入口函数
     * 参数：MbassadorConfiguration总线配置对象
     * 参数：event队列
     */
-    public func unregisterAsny(mbassadorConfiguration: MbassadorConfiguration, eventQueue: BlockingQueue<Event>): Unit 
+    public func unregisterAsny(mbassadorConfiguration: MbassadorConfiguration, eventQueue: LinkedBlockingQueue<Event>): Unit 
     /*
     * 异步发布入口函数
     * 参数：MbassadorConfiguration总线配置对象
     * 参数：event队列
     */
-    public func publishAsny(mbassadorConfiguration: MbassadorConfiguration, eventQueue: BlockingQueue<Event>): Unit
+    public func publishAsny(mbassadorConfiguration: MbassadorConfiguration, eventQueue: LinkedBlockingQueue<Event>): Unit
 }
 /*
 * MbassadorConfiguration总线配置

@@ -26,34 +26,37 @@ public class Mbassador {
     }
 
     //同步订阅
+    @Frozen
     public func register(event: Event): Bool {
         try {
-            return mbassadorConfiguration.getExector(Constant.REGISTER).execute(event)
+            return mbassadorConfiguration.subscriberFactorry.execute(event)
         }catch(e:MbassadorException){
             throw MbassadorException("register fail")
         }
 
     }
     //取消订阅
+    @Frozen
     public func unregister(event: Event): Bool {
         try{
-            return mbassadorConfiguration.getExector(Constant.UNREGISTER).execute(event)
+            return mbassadorConfiguration.unSubscriberFactory.execute(event)
         }catch(e:MbassadorException){
             throw MbassadorException("unSubscribe error.The current event has not been subscribed, please operate subscription first.")
         }
 
     }
     //发布
+    @Frozen
     public func publish(event: Event): Bool {
         try{
-            return mbassadorConfiguration.getExector(Constant.PUBLISH).execute(event)
+            return mbassadorConfiguration.publisherFactory.execute(event)
         }catch(e:MbassadorException){
             throw MbassadorException("publish fail.The current event has not been subscribed, please operate subscription first.")
         }
     }
 
     //异步订阅
-    public func registerAsny(mbassadorConfiguration: MbassadorConfiguration, eventQueue: BlockingQueue<Event>): Unit {
+    public func registerAsny(mbassadorConfiguration: MbassadorConfiguration, eventQueue: LinkedBlockingQueue<Event>): Unit {
         try {
             mbassadorConfiguration.executorService.asyncExec(FeatureType.REGISTER, mbassadorConfiguration, eventQueue)
         }catch(e:MbassadorException){
@@ -62,7 +65,7 @@ public class Mbassador {
     }
 
     //异步取消订阅
-    public func unregisterAsny(mbassadorConfiguration: MbassadorConfiguration, eventQueue: BlockingQueue<Event>): Unit {
+    public func unregisterAsny(mbassadorConfiguration: MbassadorConfiguration, eventQueue: LinkedBlockingQueue<Event>): Unit {
         try{
             mbassadorConfiguration.executorService.asyncExec(FeatureType.UNREGISTER, mbassadorConfiguration, eventQueue)
         }catch(e:MbassadorException){
@@ -72,7 +75,7 @@ public class Mbassador {
     }
 
     //异步发布
-    public func publishAsny(mbassadorConfiguration: MbassadorConfiguration, eventQueue: BlockingQueue<Event>): Unit {
+    public func publishAsny(mbassadorConfiguration: MbassadorConfiguration, eventQueue: LinkedBlockingQueue<Event>): Unit {
         try{
             mbassadorConfiguration.executorService.asyncExec(FeatureType.PUBLISH, mbassadorConfiguration, eventQueue)
         }catch(e:MbassadorException){

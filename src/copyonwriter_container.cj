@@ -42,14 +42,17 @@ public class CopyOnWriterContainer <: Collection<Event> {
         }
     }
 
+    @Frozen
     public func append(t: Event): Unit {
         var nodeIndfo = this.container.addLast(t)
         t.linkedListNode = nodeIndfo
     }
+    @Frozen
     public func remove(t: Event): Unit {
         t.linkedListNode = None
     }
 
+    @Frozen
     public func iterator(): Iterator<Event> {
         this.container.iterator()
     }
