@@ -24,7 +24,8 @@ public class SubscriberFactory <: Exector {
         subFactory.eventMap = eventMap
         return subFactory
     }
-    let mtx: ReentrantMutex = ReentrantMutex()
+    let mtx: Mutex = Mutex()
+    @Frozen
     public func execute(event: Event): Bool {
         isFinished = false
         try{
@@ -38,7 +39,7 @@ public class SubscriberFactory <: Exector {
                 eventContainer.append(event)
                 mtx.unlock()
                 var eventManager: EventManager = EventManager(eventContainer)
-                eventMap.put(event.evevtTypeName, eventManager)
+                eventMap.add(event.evevtTypeName, eventManager)
             }
             isFinished = true
         }catch(e:MbassadorException){
@@ -64,7 +65,7 @@ public class PublisherFactory <: Exector {
         pubInst.eventMap = eventMap
         return pubInst
     }
-
+    @Frozen
     public func execute(event: Event): Bool {
         isFinished = false
         if (event.linkedListNode.isSome()) {
@@ -90,13 +91,14 @@ public class UnSubscriberFactory <: Exector {
     private init() {
     }
 
-    public static func getUnSubscriberFactoryInstance(eventMap: ConcurrentHashMap<String, EventManager>): Exector {
+    public static func getUnSubscriberFactoryInstance(eventMap: ConcurrentHashMap<String, EventManager>): UnSubscriberFactory {
         var subFactory: UnSubscriberFactory = UnSubscriberFactory()
         subFactory.eventMap = eventMap
         return subFactory
     }
 
-    let mtx: ReentrantMutex = ReentrantMutex()
+    let mtx: Mutex = Mutex()
+    @Frozen
     public func execute(event: Event): Bool {
         isFinished = false
 

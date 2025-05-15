@@ -5,7 +5,7 @@
 <p align="center">
 <img alt="" src="https://img.shields.io/badge/release-v0.0.1-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v0.59.6-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v0.60.5-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-90.4%25-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
@@ -107,7 +107,7 @@ cjpm build
         mbconfig.setExecutorService(ExecutorService(3, 3, 30))
         var mbassador = Mbassador(mbconfig)
         //订阅
-        var eventQueue: BlockingQueue<Event> = BlockingQueue<Event>()
+        var eventQueue: LinkedBlockingQueue<Event> = LinkedBlockingQueue<Event>()
         for (i in 0..1000) {
             var event: Event = Event("IntergerType",IntegerSubscriber(),IntegerPublisher())
             eventQueue.enqueue(event)
@@ -126,7 +126,7 @@ cjpm build
         mbconfig.setExecutorService(ExecutorService(3, 3, 30))
         var mbassador = Mbassador(mbconfig)
         //订阅
-        var eventQueue: BlockingQueue<Event> = BlockingQueue<Event>()
+        var eventQueue: LinkedBlockingQueue<Event> = LinkedBlockingQueue<Event>()
         for (i in 0..1000) {
             var event: Event = Event("IntergerType",IntegerSubscriber(),IntegerPublisher())
             eventQueue.enqueue(event)
@@ -201,7 +201,7 @@ public class PublisherFilter <: Filter {
 
 在下述版本验证通过：
 
-    Cangjie Version: 0.59.6
+    Cangjie Version: 0.60.5
 
 ## 开源协议
 

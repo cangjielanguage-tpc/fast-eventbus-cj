@@ -17,16 +17,11 @@ public class MbassadorConfiguration {
     //线程池，默认都是1
     public var executorService: ExecutorService = ExecutorService()
 
-    public init() {
-        var subscriberFactorry: Exector = SubscriberFactory.getSubscriberFactoryInstacne(eventMap)
-        var publisherFactory: Exector = PublisherFactory.getPublisherFactoryInstance(eventMap)
-        var UnSubscriberFactory: Exector = UnSubscriberFactory.getUnSubscriberFactoryInstance(eventMap)
-        exectorMap.add(Constant.REGISTER, subscriberFactorry)
-        exectorMap.add(Constant.PUBLISH, publisherFactory)
-        exectorMap.add(Constant.UNREGISTER, UnSubscriberFactory)
-    }
+    public var subscriberFactorry: SubscriberFactory = SubscriberFactory.getSubscriberFactoryInstacne(eventMap)
+    public var publisherFactory: PublisherFactory = PublisherFactory.getPublisherFactoryInstance(eventMap)
+    public var unSubscriberFactory: UnSubscriberFactory = UnSubscriberFactory.getUnSubscriberFactoryInstance(eventMap)
 
-    public func getExector(typestr: String): Exector {
-        return exectorMap[typestr]
+    public init() {
+
     }
 }

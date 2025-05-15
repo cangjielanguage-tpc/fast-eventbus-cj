@@ -38,8 +38,8 @@ public class DataProvider {
         }
         return eventContainer
     }
-    public static func prepareDataQueue(eventContainer: CopyOnWriterContainer): BlockingQueue<Event> {
-        var eventQueue: BlockingQueue<Event> = BlockingQueue<Event>()
+    public static func prepareDataQueue(eventContainer: CopyOnWriterContainer): LinkedBlockingQueue<Event> {
+        var eventQueue: LinkedBlockingQueue<Event> = LinkedBlockingQueue<Event>()
         for (event in eventContainer) {
             eventQueue.enqueue(event)
         }
