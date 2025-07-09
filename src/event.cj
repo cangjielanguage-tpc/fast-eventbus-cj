@@ -11,7 +11,7 @@ public class Event <: Equatable<Event> {
     public var evevtTypeName: String = ""
     public var subscriber: Subscriber = unsafe { zeroValue<Subscriber>() }
     public var publisher: Publisher = unsafe { zeroValue<Publisher>() }
-    var linkedListNode:?LinkedListNode<Event> = None
+    public var id:?Int64 = None
     
     public init() {}
 

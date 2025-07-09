@@ -24,20 +24,15 @@ public class SubscriberFactory <: Exector {
         subFactory.eventMap = eventMap
         return subFactory
     }
-    let mtx: Mutex = Mutex()
     @Frozen
     public func execute(event: Event): Bool {
         isFinished = false
         try{
             if (let Some(eventIn) <- eventMap.get(event.evevtTypeName)) {
-                mtx.lock()
                 eventIn.eventContainer.append(event)
-                mtx.unlock()
             } else {
                 var eventContainer: CopyOnWriterContainer = CopyOnWriterContainer()
-                mtx.lock()
                 eventContainer.append(event)
-                mtx.unlock()
                 var eventManager: EventManager = EventManager(eventContainer)
                 eventMap.add(event.evevtTypeName, eventManager)
             }
@@ -68,7 +63,7 @@ public class PublisherFactory <: Exector {
     @Frozen
     public func execute(event: Event): Bool {
         isFinished = false
-        if (event.linkedListNode.isSome()) {
+        if (event.id.isSome()) {
             event.publisher.publish(event)
             isFinished = true
         }else{
@@ -97,19 +92,15 @@ public class UnSubscriberFactory <: Exector {
         return subFactory
     }
 
-    let mtx: Mutex = Mutex()
     @Frozen
     public func execute(event: Event): Bool {
         isFinished = false
-
-        mtx.lock()
         if(let Some(v) <- eventMap.get(event.evevtTypeName)){
             v.eventContainer.remove(event)
             isFinished = true
         }else{
             throw MbassadorException("")
         }
-        mtx.unlock()
         return isFinished
     }
     public func isFinshed(): Bool {
