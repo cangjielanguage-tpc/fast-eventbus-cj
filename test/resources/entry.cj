@@ -17,7 +17,7 @@ public class IntegerSubscriber <: Subscriber {
 
     public func onEvent(event: Event): Unit {
         counter.fetchAdd(1)
-        // println("IntegerSubscriber onEvent: ${counter.load()}")
+        //println("IntegerSubscriber onEvent: ${counter.load()}")
     }
 }
 
@@ -32,7 +32,7 @@ public class DataProvider {
     public static func prepareData(instance: Int64):CopyOnWriterContainer {
         var eventContainer: CopyOnWriterContainer = CopyOnWriterContainer()
         //数据准备
-        for (i in 0..instance) {
+        for (_ in 0..instance) {
             var event: Event = Event("IntergerType",IntegerSubscriber(),IntegerPublisher())
             eventContainer.append(event)
         }
@@ -41,7 +41,7 @@ public class DataProvider {
     public static func prepareDataQueue(eventContainer: CopyOnWriterContainer): LinkedBlockingQueue<Event> {
         var eventQueue: LinkedBlockingQueue<Event> = LinkedBlockingQueue<Event>()
         for (event in eventContainer) {
-            eventQueue.enqueue(event)
+            eventQueue.add(event)
         }
         return eventQueue
     }
@@ -56,5 +56,9 @@ public class DataProvider {
             newContainer.append(event)
         }
         return newContainer
+    }
+
+    public static func recoveryCounter(){
+        counter = AtomicInt64(0)
     }
 }

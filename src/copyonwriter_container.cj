@@ -5,51 +5,39 @@ package mbassador4cj
 
 import std.collection.*
 import std.sync.*
+import std.sort.*
 
 /*
  * CopyOnWriterContainer  COW 无阻塞读，写时加锁
  */
 public class CopyOnWriterContainer <: Collection<Event> {
 
-    private var container: LinkedList<Event>
+    private var container: ArrayList<Event>
+    let mtx: Mutex = Mutex()
 
     public init() {
-        this.container = LinkedList<Event>()
+        this.container = ArrayList<Event>()
     }
 
     public func isEmpty(): Bool {
-         var size = 0
-        for(e in container){
-            if(e.linkedListNode.isSome()){
-                size++
-                break
-            }
-        }
-        if(size == 0){
-            return true
-        }
-        return false     
+        return this.container.isEmpty()
     }
     public prop size: Int64 {
         get() {
-            var size = 0
-            for(e in container){
-                if(e.linkedListNode.isSome()){
-                    size++
-                }
-            }
-            return size
+            return this.container.size
         }
     }
 
     @Frozen
     public func append(t: Event): Unit {
-        var nodeIndfo = this.container.addLast(t)
-        t.linkedListNode = nodeIndfo
+        mtx.lock()
+        this.container.add(t)
+        t.id = this.size - 1
+        mtx.unlock()
     }
     @Frozen
     public func remove(t: Event): Unit {
-        t.linkedListNode = None
+        t.id = None
     }
 
     @Frozen
@@ -58,9 +46,25 @@ public class CopyOnWriterContainer <: Collection<Event> {
     }
 
     public func clear() {
-        for(e in container){
-            e.linkedListNode = None
-        }
         this.container.clear()
+    }
+
+    @Frozen
+    public operator func [](index: Int64): Event{
+        return this.container[index]
+    }
+
+    @Frozen
+    public func removeNoneEvent(){
+        mtx.lock()
+        this.container.removeIf({
+            item => 
+            return if (item.id.isNone() ) {
+                true
+            } else {
+                false
+            }
+        })
+        mtx.unlock()
     }
 }

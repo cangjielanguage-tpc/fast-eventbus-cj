@@ -23,7 +23,7 @@ class CopyOnWriterContainerTest {
 
         c.remove(eventA)
         c.remove(eventB)
-        @Assert(c.size,0)
-        @Assert(c.isEmpty(),true)
+        @Assert(eventA.id,None)
+        @Assert(eventB.id,None)
     }
 }
