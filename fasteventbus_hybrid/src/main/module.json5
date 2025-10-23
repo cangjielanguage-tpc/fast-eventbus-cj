@@ -1,0 +1,9 @@
+{
+  "module": {
+    "name": "fasteventbus_hybrid",
+    "type": "har",
+    "deviceTypes": [
+      "default"
+    ]
+  }
+}
