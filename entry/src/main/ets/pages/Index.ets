@@ -1,5 +1,5 @@
 import { systemDateTime } from '@kit.BasicServicesKit';
-import {test_addF64_Entry} from './fasteventbus_entry'
+import {test_addF64_Entry,test_register_Entry} from './fasteventbus_entry'
 
 @Entry
 @Component
@@ -18,6 +18,9 @@ struct Index {
         })
         this.button('test addF64', () => {
           test_addF64_Entry()
+        })
+        this.button('test register', () => {
+          test_register_Entry()
         })
     }
     .height('100%')

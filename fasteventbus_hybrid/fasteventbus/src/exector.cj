@@ -63,8 +63,8 @@ public class PublisherFactory <: Exector {
     @Frozen
     public func execute(event: Event): Bool {
         isFinished = false
-        if (event.id.isSome()) {
-            event.publisher.publish(event)
+        if (event.id.isSome() && let Some(publish) <- event.publisher) {
+            publish(event)
             isFinished = true
         }else{
             throw MbassadorException("")

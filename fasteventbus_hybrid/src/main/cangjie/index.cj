@@ -1,24 +1,72 @@
 package ohos_app_cangjie_fastevent_hybrid
-
-internal import ohos.ark_interop.*
-import ohos.ark_interop_macro.Interop
-import fasteventbus.*
-
-// 用户自定义的函数 addF64, 入参接收两个number，返回相加后的结果
-@Interop[ArkTS]
-public func addF64(a: Float64, b: Float64): Float64 {
-    let t:TestH = TestH()
-    t.addF64(a,b)
-}
-
-public func addF64(runtime: JSContext, callInfo: JSCallInfo): JSValue{
-    let value0 = callInfo[0].toNumber()
-    let value1 = callInfo[1].toNumber()
-    let result = addF64(value0,value1)
-    result.toJSValue(runtime)
-}
-
-let EXPORT_MODULE = JSModule.registerModule {
-    runtime, exports =>
-        exports["addF64"] = runtime.function(addF64).toJSValue()
-}
+//
+//import ohos.ark_interop.*
+//import ohos.ark_interop_macro.*
+//import fasteventbus.*
+//import ohos.ark_interop_helper.*
+//
+////@Interop[ArkTS]
+////public func addF64(a: Float64, b!: Float64): Float64 {
+////    a + b
+////}
+//
+//
+//@Interop[ArkTS]
+//public class Demo {
+//    public init() {
+//
+//    }
+//}
+//
+//
+//
+//@Interop[ArkTs]
+//public class EventTs1{
+//    var evevtTypeName: String = ""
+//    var subscriber: ?(Event) -> Unit = None
+//    var publisher: ?(Event) -> Unit = None
+//
+//    var e:?Event = None
+//    public init(evevtTypeName:String,subscriber:(Demo) -> Unit,publisher:(Demo) -> Unit) {
+//        this.evevtTypeName = evevtTypeName
+//        this.subscriber = {
+//            event => (subscriber)
+//        }
+//        this.publisher = {
+//            event => (publisher)
+//        }
+//        e = Event(this.evevtTypeName,this.subscriber,this.publisher)
+//    }
+//}
+//
+//@Interop[ArkTs]
+//public class EventTs{
+//    var evevtTypeName: String = ""
+//    var subscriber: ?(Event) -> Unit = None
+//    var publisher: ?(Event) -> Unit = None
+//
+//    var e:?Event = None
+//    public init(evevtTypeName:String,subscriber:(EventTS) -> Unit,publisher:(EventTS) -> Unit) {
+//        this.evevtTypeName = evevtTypeName
+//        this.subscriber = {
+//            event => (subscriber)
+//        }
+//        this.publisher = {
+//            event => (publisher)
+//        }
+//        e = Event(this.evevtTypeName,this.subscriber,this.publisher)
+//    }
+//}
+//
+//@Interop[ArkTS]
+//public func arktsFuncToCj(name:String,sub:(EventTS1) -> Unit,pub:(EventTS1) -> Unit):Unit{
+//    let m:Mbassador = Mbassador()
+//    let eventTs:EventTs1 = EventTs1(name,sub,pub)
+////    if(let Some(event) <- EventTs1.e){
+////        m.register(event)
+////    }
+//}
+//
+//
+//
+//

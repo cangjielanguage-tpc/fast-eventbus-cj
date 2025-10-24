@@ -1,3 +1,6 @@
+export declare class Demo {
+}
+
 export declare interface CustomLib {
-    addF64(a: number, b: number): number
+    Demo: {new (evevtTypeName: string): Demo}
 }
