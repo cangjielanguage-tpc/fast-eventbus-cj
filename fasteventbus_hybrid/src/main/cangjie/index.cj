@@ -4,7 +4,6 @@ import ohos.ark_interop.*
 import ohos.ark_interop_macro.*
 import fasteventbus.*
 import ohos.hilog.*
-import std.collection.*
 
 let m:Mbassador = Mbassador()
 
@@ -46,7 +45,7 @@ public func publish(eventTypeName:String):Unit{
 let container = m.mbassadorConfiguration.eventMap.get(eventTypeName).getOrThrow().eventContainer
     Hilog.debug(0X001,"hybrid-fasteventbus","container.size:${container.size}")
     for(e in container){
-        m.unregister(e)
+        m.publish(e)
     }
 }
 

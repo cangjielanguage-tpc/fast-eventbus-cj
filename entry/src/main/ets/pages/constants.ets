@@ -1,2 +1,2 @@
 
-export const loopCounts = [1, 10, 100,1000];
+export const loopCounts = [1,10,100,1000]
