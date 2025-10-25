@@ -5,7 +5,6 @@ package fasteventbus
 
 import std.collection.*
 import std.sync.*
-import std.sort.*
 
 /*
  * CopyOnWriterContainer  COW 无阻塞读，写时加锁
@@ -32,6 +31,7 @@ public class CopyOnWriterContainer <: Collection<Event> {
     public func append(t: Event): Unit {
         mtx.lock()
         this.container.add(t)
+        Hilog.debug(0X001,"CJ-fasteventbus","container.size:${this.container.size}")
         t.id = this.size - 1
         mtx.unlock()
     }

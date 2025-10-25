@@ -29,8 +29,10 @@ public class SubscriberFactory <: Exector {
         isFinished = false
         try{
             if (let Some(eventIn) <- eventMap.get(event.evevtTypeName)) {
+                Hilog.debug(0X001,"CJ-fasteventbus","${event.evevtTypeName}")
                 eventIn.eventContainer.append(event)
             } else {
+                Hilog.debug(0X001,"CJ-fasteventbus","new type need creat new container.")
                 var eventContainer: CopyOnWriterContainer = CopyOnWriterContainer()
                 eventContainer.append(event)
                 var eventManager: EventManager = EventManager(eventContainer)

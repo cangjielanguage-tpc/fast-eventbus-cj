@@ -5,7 +5,6 @@ package fasteventbus
 
 import std.collection.*
 import std.collection.concurrent.*
-import ohos.hilog.*
 /*
  * 使用方法：
  * 1、需要使用者实现接口subscriber，publish（对于仓颉语言）其他语言需要宏编译
@@ -29,9 +28,9 @@ public class Mbassador {
     //同步订阅
     @Frozen
     public func register(event: Event): Bool {
-        Hilog.info(0X001,"test","enter cj register")
         try {
             return mbassadorConfiguration.subscriberFactorry.execute(event)
+
         }catch(e:MbassadorException){
             throw MbassadorException("register fail")
         }
